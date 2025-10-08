@@ -1,13 +1,36 @@
+import { motion } from "framer-motion";
 
-function Button({ text, onClick, type = "button", className = "" }) {
+function Button({
+  text,
+  onClick,
+  type = "button",
+  className = "",
+  whileHover,
+  whileTap,
+  transition,
+}) {
   return (
-    <button
+    <motion.button
       type={type}
       onClick={onClick}
-      className={`bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition ${className}`}
+      className={`
+        rounded-lg 
+        transition 
+        bg-[#4C637D] 
+        text-[#FAF3EA] 
+        font-bold 
+        text-[36px] 
+        py-4 
+        px-8 
+        hover:brightness-110
+        ${className}
+      `}
+      whileHover={whileHover}
+      whileTap={whileTap}
+      transition={transition}
     >
       {text}
-    </button>
+    </motion.button>
   );
 }
 
