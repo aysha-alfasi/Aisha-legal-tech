@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Aisha from "../imgs/lagalImg.png";
 
@@ -12,37 +12,42 @@ export default function SpaceChatBot({ onClose }) {
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
-  const rights = useMemo(
-    () => ({
-      tenant:
-        "As a tenant, you have rights to fair rent, notice before increase, and safe housing.",
-      employee:
-        "As an employee, you deserve fair pay, safe working conditions, and protection against unfair dismissal.",
-      consumer:
-        "As a consumer, you have rights to safe products, clear information, and refunds for defective goods.",
-      other: "For other topics, you can consult a lawyer for detailed advice.",
-    }),
-    []
-  );
+  
 
-  const handleSend = useCallback(() => {
-    const trimmed = input.trim();
-    if (!trimmed) return;
+  const handleSend = useCallback(async () => {
+  const trimmed = input.trim();
+  if (!trimmed) return;
 
-    setMessages((prev) => [...prev, { type: "user", text: trimmed }]);
-    setInput("");
+  setMessages((prev) => [...prev, { type: "user", text: trimmed }]);
+  setInput("");
 
-    const lower = trimmed.toLowerCase();
-    const reply =
-      Object.keys(rights).find((key) => lower.includes(key)) !== undefined
-        ? rights[Object.keys(rights).find((key) => lower.includes(key))]
-        : "Sorry, I didn't quite get that. Try: tenant, employee, or consumer.";
+  // show a temporary "Thinking..." message while waiting for the response ♥/>
+  setMessages((prev) => [
+    ...prev,
+    { type: "bot", text: "Thinking..." },
+  ]);
 
-    setTimeout(
-      () => setMessages((prev) => [...prev, { type: "bot", text: reply }]),
-      600
-    );
-  }, [input, rights]);
+  try {
+    const res = await fetch("/api/aishaChatBot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: trimmed }),
+    });
+    const data = await res.json();
+
+    // replace the "Thinking..." message with the actual reply ♥/>
+    setMessages((prev) => [
+      ...prev.slice(0, -1),
+      { type: "bot", text: data.reply },
+    ]);
+  } catch (err) {
+    setMessages((prev) => [
+      ...prev.slice(0, -1),
+      { type: "bot", text: "⚠️ There was an error. Please try again." },
+    ]);
+  }
+}, [input]);
+
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
