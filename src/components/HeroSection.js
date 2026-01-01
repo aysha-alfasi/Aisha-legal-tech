@@ -1,44 +1,35 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Aisha from "../imgs/lagalImg.png";
 import Button from "./UI/Button";
-import ChatBot from "./ChatBot";
-import { motion } from "framer-motion";
 
-export default function HeroSection() {
-  const [openChat, setOpenChat] = useState(false);
+export default function HeroSection({ onStart }) {
   const [typedText, setTypedText] = useState("");
 
-  const fullText =
-    "Aisha is a friendly chatbot, here to educate you about your basic rights. Tap Start!";
+  const fullText = "Empowering You with Legal Knowledge.";
 
-  // typing effect <♥
+  // < typing effect ♥ />
   useEffect(() => {
     let index = 0;
-    let interval;
-
-    const typeNextChar = () => {
-      // make sure the letter exists before adding it <♥
+    const interval = setInterval(() => {
       if (index < fullText.length) {
         setTypedText((prev) => prev + fullText.charAt(index));
         index++;
-      } else {
-        clearInterval(interval); // stop when done <♥
-      }
-    };
-
-    interval = setInterval(typeNextChar, 45);
-
-    return () => clearInterval(interval); // cleanup on unmount <♥
+      } else clearInterval(interval);
+    }, 45);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div
       className="min-h-screen flex flex-col justify-start relative overflow-hidden"
+      id="home"
       style={{
         background:
           "linear-gradient(135deg, #0B0C10 0%, #1E2337 50%, #0C0F1E 100%)",
       }}
     >
+      {/* < Background grid animation ♥ /> */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 animate-grid" />
         <div
@@ -54,6 +45,7 @@ export default function HeroSection() {
       </div>
 
       <div className="flex flex-col items-center mt-32 gap-y-10 px-1 relative z-10">
+        {/* < Hero Title ♥ /> */}
         <motion.h1
           className="text-white font-bold text-[48px] sm:text-[56px] md:text-[64px] text-center mb-8 font-heading tracking-wide"
           initial={{ opacity: 0, y: -30, scale: 0.9 }}
@@ -63,24 +55,57 @@ export default function HeroSection() {
             scale: [1.02, 0.98, 1],
             textShadow: "0 0 20px rgba(100,180,255,0.4)",
           }}
-          transition={{
-            duration: 1.8,
-            ease: "easeInOut",
-          }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
         >
-          Aisha, tell me my rights!
+          Aisha Legal Tech
         </motion.h1>
 
+        {/* < Hero Subtitle ♥ /> */}
         <motion.p
-          className="text-white text-center text-[18px] sm:text-[20px] md:text-[23px] max-w-3xl font-light font-paragraph px-4 sm:px-0 mb-10"
+          className="text-white text-center text-[18px] sm:text-[20px] md:text-[23px] max-w-3xl font-light font-paragraph px-4 sm:px-0 mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
         >
-          Know your rights fast with Aisha! Find out what you are entitled to as
-          a tenant, employee, or consumer.
+          Know Your Rights Before You Need Them 🛡️
         </motion.p>
+        {/* < Hero Features Strip ♥ /> */}
+        <motion.div
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 -pt-10 text-white/75 
+             text-[14px] sm:text-[15px] md:text-[16px] font-light mb-8 px-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.25,
+                delayChildren: 0.7,
+              },
+            },
+          }}
+        >
+          {[
+            "Describe real situations",
+            "Explore your rights",
+            "Test your legal knowledge",
+          ].map((item, index) => (
+            <motion.span
+              key={index}
+              className="flex items-center gap-2 whitespace-nowrap"
+              variants={{
+                hidden: { opacity: 0, y: 8 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <span className="text-[#9BB8FF]">•</span>
+              {item}
+            </motion.span>
+          ))}
+        </motion.div>
 
+        {/* < Start Now Button & Aisha Image ♥ /> */}
         <motion.div
           className="flex flex-col sm:flex-row items-center gap-12 sm:gap-8 md:gap-40 md:mt-6 lg:mt-6 xl:mt-8"
           initial={{ opacity: 0, scale: 0.8, rotateX: 15 }}
@@ -88,9 +113,7 @@ export default function HeroSection() {
           transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
         >
           <motion.div
-            whileHover={{
-              scale: 1.05,
-            }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{
               borderRadius: "1rem",
@@ -99,7 +122,7 @@ export default function HeroSection() {
               transition: "transform 0.25s ease-out",
             }}
           >
-            <Button text="Start Now" onClick={() => setOpenChat(true)} />
+            <Button text="Start Learning" onClick={onStart} />
           </motion.div>
 
           <motion.img
@@ -120,8 +143,9 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
+      {/* < Typing effect ♥ /> */}
       <motion.div
-        className="px-4 sm:px-6 md:px-8 text-center mb-10 sm:mb-12 md:mb-14 max-w-full"
+        className="px-4 sm:px-6 md:px-8 text-center mb-10 sm:mb-12 md:mb-14 max-w-full pt-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.2 }}
@@ -138,15 +162,12 @@ export default function HeroSection() {
         </span>
       </motion.div>
 
-      {openChat && <ChatBot onClose={() => setOpenChat(false)} />}
-
-      {/* < background grid animation ♥ /> */}
+      {/* <Background grid animation styles ♥ /> */}
       <style>{`
         @keyframes moveGrid {
           from { background-position: 0 0, 0 0; }
           to { background-position: 200px 200px, -200px -200px; }
         }
-
         .animate-grid {
           background-image: 
             linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),

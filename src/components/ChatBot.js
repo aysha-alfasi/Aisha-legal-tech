@@ -6,7 +6,7 @@ export default function SpaceChatBot({ onClose }) {
   const [messages, setMessages] = useState([
     {
       type: "bot",
-      text: "👋 Hello! I’m Aisha, your legal assistant. What would you like to know about your rights today?",
+      text: "You can describe your situation in your own words. I’ll help identify general legal principles that may apply.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -38,7 +38,7 @@ export default function SpaceChatBot({ onClose }) {
     // replace the "Thinking..." message with the actual reply ♥/>
     setMessages((prev) => [
       ...prev.slice(0, -1),
-      { type: "bot", text: data.reply },
+      { type: "bot", content: data.reply },
     ]);
   } catch (err) {
     setMessages((prev) => [
@@ -78,7 +78,7 @@ export default function SpaceChatBot({ onClose }) {
         {/* < Chat Area ♥ /> */}
         <div className="flex-1 px-4 py-2 overflow-y-auto custom-scroll flex flex-col gap-3 mt-2">
           <AnimatePresence initial={false}>
-            {messages.map(({ type, text }, i) => (
+            {messages.map(({ type, text, content }, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 8 }}
@@ -96,15 +96,45 @@ export default function SpaceChatBot({ onClose }) {
                     className="w-9 h-9 rounded-full mr-2 border border-white/10"
                   />
                 )}
-                <div
-                  className={`px-4 py-2 rounded-2xl text-sm leading-relaxed max-w-[75%] ${
-                    type === "bot"
-                      ? "bg-[#4C637D]/60 text-[#FAF3EA] shadow-[0_0_8px_rgba(76,99,125,0.6)]"
-                      : "bg-[#FAF3EA] text-[#4C637D] shadow-[0_0_10px_rgba(250,243,234,0.4)]"
-                  }`}
-                >
-                  {text}
-                </div>
+               <div
+  className={`px-4 py-2 rounded-2xl text-sm leading-relaxed max-w-[75%] ${
+    type === "bot"
+      ? "bg-[#4C637D]/60 text-[#FAF3EA] shadow-[0_0_8px_rgba(76,99,125,0.6)]"
+      : "bg-[#FAF3EA] text-[#4C637D] shadow-[0_0_10px_rgba(250,243,234,0.4)]"
+  }`}
+>
+{type === "bot" && content ? (
+  <div className="flex flex-col gap-2 text-sm leading-relaxed">
+
+    {/*  < Intro ♥ /> */}
+    {content.intro && (
+      <p className="text-slate-100">
+        {content.intro}
+      </p>
+    )}
+
+    {/* < Principle ♥ /> */}
+    <p>
+      <strong className="text-[#FAF3EA]">Principle:</strong>{" "}
+      <span className="text-slate-100">{content.principle}</span>
+    </p>
+
+    {/* < First Step ♥ /> */}
+    <p>
+      <strong className="text-[#FAF3EA]">First Step:</strong>{" "}
+      <span className="text-slate-100">{content.firstStep}</span>
+    </p>
+    {/* < Note ♥ /> */}
+    <small className="text-slate-400 mt-2">
+      {content.note}
+    </small>
+  </div>
+) : (
+  text
+)}
+
+</div>
+
               </motion.div>
             ))}
           </AnimatePresence>
