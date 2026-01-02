@@ -3,51 +3,48 @@ import { motion, AnimatePresence } from "framer-motion";
 import Aisha from "../imgs/lagalImg.png";
 
 export default function SpaceChatBot({ onClose }) {
-  const [messages, setMessages] = useState([
-    {
-      type: "bot",
-      text: "You can describe your situation in your own words. I’ll help identify general legal principles that may apply.",
-    },
-  ]);
+const [messages, setMessages] = useState([
+  {
+    type: "bot",
+    text: `Tell me about a real-life situation, and I’ll explain the legal principles that may apply.
+
+Note: To give you the most accurate help, I’m designed to respond to legal-related situations only.`,
+  },
+]);
+
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
-  
-
   const handleSend = useCallback(async () => {
-  const trimmed = input.trim();
-  if (!trimmed) return;
+    const trimmed = input.trim();
+    if (!trimmed) return;
 
-  setMessages((prev) => [...prev, { type: "user", text: trimmed }]);
-  setInput("");
+    setMessages((prev) => [...prev, { type: "user", text: trimmed }]);
+    setInput("");
 
-  // show a temporary "Thinking..." message while waiting for the response ♥/>
-  setMessages((prev) => [
-    ...prev,
-    { type: "bot", text: "Thinking..." },
-  ]);
+    // show a temporary "Thinking..." message while waiting for the response ♥/>
+    setMessages((prev) => [...prev, { type: "bot", text: "Thinking..." }]);
 
-  try {
-    const res = await fetch("/api/aishaChatBot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: trimmed }),
-    });
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/aishaChatBot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: trimmed }),
+      });
+      const data = await res.json();
 
-    // replace the "Thinking..." message with the actual reply ♥/>
-    setMessages((prev) => [
-      ...prev.slice(0, -1),
-      { type: "bot", content: data.reply },
-    ]);
-  } catch (err) {
-    setMessages((prev) => [
-      ...prev.slice(0, -1),
-      { type: "bot", text: "⚠️ There was an error. Please try again." },
-    ]);
-  }
-}, [input]);
-
+      // replace the "Thinking..." message with the actual reply ♥/>
+      setMessages((prev) => [
+        ...prev.slice(0, -1),
+        { type: "bot", content: data.reply },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev.slice(0, -1),
+        { type: "bot", text: "⚠️ There was an error. Please try again." },
+      ]);
+    }
+  }, [input]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,45 +93,53 @@ export default function SpaceChatBot({ onClose }) {
                     className="w-9 h-9 rounded-full mr-2 border border-white/10"
                   />
                 )}
-               <div
-  className={`px-4 py-2 rounded-2xl text-sm leading-relaxed max-w-[75%] ${
-    type === "bot"
-      ? "bg-[#4C637D]/60 text-[#FAF3EA] shadow-[0_0_8px_rgba(76,99,125,0.6)]"
-      : "bg-[#FAF3EA] text-[#4C637D] shadow-[0_0_10px_rgba(250,243,234,0.4)]"
-  }`}
->
-{type === "bot" && content ? (
-  <div className="flex flex-col gap-2 text-sm leading-relaxed">
+                <div
+                  className={`px-4 py-2 rounded-2xl text-sm leading-relaxed max-w-[75%] ${
+                    type === "bot"
+                      ? "bg-[#4C637D]/60 text-[#FAF3EA] shadow-[0_0_8px_rgba(76,99,125,0.6)]"
+                      : "bg-[#FAF3EA] text-[#4C637D] shadow-[0_0_10px_rgba(250,243,234,0.4)]"
+                  }`}
+                >
+                  {type === "bot" && content ? (
+                    <div className="flex flex-col gap-2 text-sm leading-relaxed">
+                      {/*  < Intro ♥ /> */}
+                      {content.intro && (
+                        <p className="text-slate-100">{content.intro}</p>
+                      )}
 
-    {/*  < Intro ♥ /> */}
-    {content.intro && (
-      <p className="text-slate-100">
-        {content.intro}
+                      {/* < Principle ♥ /> */}
+                      <p>
+                        <strong className="text-[#FAF3EA]">Principle:</strong>{" "}
+                        <span className="text-slate-100">
+                          {content.principle}
+                        </span>
+                      </p>
+
+                      {/* < First Step ♥ /> */}
+                      <p>
+                        <strong className="text-[#FAF3EA]">First Step:</strong>{" "}
+                        <span className="text-slate-100">
+                          {content.firstStep}
+                        </span>
+                      </p>
+                      {/* < Note ♥ /> */}
+                      <small className="text-slate-400 mt-2">
+                        {content.note}
+                      </small>
+                    </div>
+                  ) : (
+                      <div className="flex flex-col gap-2">
+    {text.split("\n\n").map((line, i) => (
+      <p
+        key={i}
+        className={i === 1 ? "text-xs text-slate-300" : ""}
+      >
+        {line}
       </p>
-    )}
-
-    {/* < Principle ♥ /> */}
-    <p>
-      <strong className="text-[#FAF3EA]">Principle:</strong>{" "}
-      <span className="text-slate-100">{content.principle}</span>
-    </p>
-
-    {/* < First Step ♥ /> */}
-    <p>
-      <strong className="text-[#FAF3EA]">First Step:</strong>{" "}
-      <span className="text-slate-100">{content.firstStep}</span>
-    </p>
-    {/* < Note ♥ /> */}
-    <small className="text-slate-400 mt-2">
-      {content.note}
-    </small>
+    ))}
   </div>
-) : (
-  text
-)}
-
-</div>
-
+                  )}
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -142,13 +147,13 @@ export default function SpaceChatBot({ onClose }) {
         </div>
 
         {/* <Input Area ♥ /> */}
-        <div className="flex items-center border-t border-white/10 p-3 bg-[rgba(255,255,255,0.04)]">
+        <div className="flex items-center border-t border-white/10 p-3 bg-[rgba(255,255,255,0.04)] pb-4">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Type your message..."
+            placeholder="Describe your situation..."
             className="flex-1 bg-transparent text-[#FAF3EA] placeholder-[#FAF3EA]/50 px-3 py-2 outline-none"
           />
           <button
@@ -158,7 +163,19 @@ export default function SpaceChatBot({ onClose }) {
             Send
           </button>
         </div>
+            {/* < Context Hint ♥ /> */}
+<div className="px-4 pb-3 text-center pt-3">
+  <p className="text-xs text-[#FAF3EA]/60 leading-relaxed">
+    🛡️ <span className="font-medium text-[#FAF3EA]/80">Aisha</span> focuses on
+    real-life legal situations only
+  </p>
+  <p className="text-xs text-[#FAF3EA]/40 mt-0.5">
+    She helps explain general legal principles, not casual conversation
+  </p>
+</div>
       </motion.div>
+
+
 
       {/* <Home Button ♥ /> */}
       <button

@@ -10,6 +10,7 @@ export default function RightsIdentifier() {
   const [role, setRole] = useState("");
   const [issue, setIssue] = useState("");
   const [documentId, setDocumentId] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   function generateDocumentId() {
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -128,12 +129,33 @@ export default function RightsIdentifier() {
     doc.save("legal-rights-summary.pdf");
   }
 
+  function handleNextStep(nextStep) {
+    let isValid = true;
+    
+    if (step === 1 && !areaKey) {
+      isValid = false;
+    } else if (step === 2 && !role) {
+      isValid = false;
+    } else if (step === 3 && !issue) {
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setShowFeedback(true);
+      setTimeout(() => setShowFeedback(false), 3000);
+      return;
+    }
+    
+    setStep(nextStep);
+    setShowFeedback(false);
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-6 pb-6 pt-2 text-white overflow-hidden max-h-[65vh]">
       {step > 1 && step < 4 && (
         <button
           onClick={() => setStep(step - 1)}
-          className="mb-4 text-sm underline opacity-70 hover:opacity-100 transition"
+          className="mb-4 text-sm underline opacity-70 hover:opacity-100 transition-opacity duration-200"
         >
           ← Back
         </button>
@@ -152,6 +174,10 @@ export default function RightsIdentifier() {
   focus:border-[#9BB8FF]
   focus:ring-2 focus:ring-[#9BB8FF]/40
   transition
+  appearance-none
+  pr-10
+  hover:border-white/30
+  cursor-pointer
 "
             value={areaKey}
             onChange={(e) => setAreaKey(e.target.value)}
@@ -164,12 +190,25 @@ export default function RightsIdentifier() {
             ))}
           </select>
 
+          {showFeedback && !areaKey && (
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-2 text-sm text-[#9BB8FF] font-medium"
+            >
+              Please select a legal area to continue
+            </motion.p>
+          )}
+
           <button
-            disabled={!areaKey}
-            onClick={() => setStep(2)}
-            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded"
+            onClick={() => handleNextStep(2)}
+            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded-lg transition-all duration-300 font-medium relative overflow-hidden group"
           >
-            Next
+            <span className="relative z-10">Next</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-[#FAF3EA] to-[#e8ddd0] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            {!areaKey && (
+              <span className="absolute top-0 right-0 bottom-0 left-0 bg-[#FAF3EA]/50 backdrop-blur-[1px] rounded-lg"></span>
+            )}
           </button>
         </>
       )}
@@ -187,6 +226,10 @@ export default function RightsIdentifier() {
   focus:border-[#9BB8FF]
   focus:ring-2 focus:ring-[#9BB8FF]/40
   transition
+  appearance-none
+  pr-10
+  hover:border-white/30
+  cursor-pointer
 "
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -199,12 +242,25 @@ export default function RightsIdentifier() {
             ))}
           </select>
 
+          {showFeedback && !role && (
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-2 text-sm text-[#9BB8FF] font-medium"
+            >
+              Please select your role to continue
+            </motion.p>
+          )}
+
           <button
-            disabled={!role}
-            onClick={() => setStep(3)}
-            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded"
+            onClick={() => handleNextStep(3)}
+            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded-lg transition-all duration-300 font-medium relative overflow-hidden group"
           >
-            Next
+            <span className="relative z-10">Next</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-[#FAF3EA] to-[#e8ddd0] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            {!role && (
+              <span className="absolute top-0 right-0 bottom-0 left-0 bg-[#FAF3EA]/50 backdrop-blur-[1px] rounded-lg"></span>
+            )}
           </button>
         </>
       )}
@@ -222,6 +278,10 @@ export default function RightsIdentifier() {
   focus:border-[#9BB8FF]
   focus:ring-2 focus:ring-[#9BB8FF]/40
   transition
+  appearance-none
+  pr-10
+  hover:border-white/30
+  cursor-pointer
 "
             value={issue}
             onChange={(e) => setIssue(e.target.value)}
@@ -234,12 +294,25 @@ export default function RightsIdentifier() {
             ))}
           </select>
 
+          {showFeedback && !issue && (
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-2 text-sm text-[#9BB8FF] font-medium"
+            >
+              Please select an issue to continue
+            </motion.p>
+          )}
+
           <button
-            disabled={!issue}
-            onClick={() => setStep(4)}
-            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded"
+            onClick={() => handleNextStep(4)}
+            className="mt-6 px-6 py-3 bg-[#FAF3EA] text-[#1E2337] rounded-lg transition-all duration-300 font-medium relative overflow-hidden group"
           >
-            Generate Summary
+            <span className="relative z-10">Generate Summary</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-[#FAF3EA] to-[#e8ddd0] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            {!issue && (
+              <span className="absolute top-0 right-0 bottom-0 left-0 bg-[#FAF3EA]/50 backdrop-blur-[1px] rounded-lg"></span>
+            )}
           </button>
         </>
       )}
@@ -318,7 +391,7 @@ export default function RightsIdentifier() {
                 className="w-full px-6 py-3 rounded-xl
                bg-[#1E2337] text-[#FAF3EA]
                font-semibold
-               hover:opacity-90 transition"
+               hover:opacity-90 transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99]"
                 onClick={() => downloadPDF({ selectedArea, issue, result })}
               >
                 Download Your Rights Summary
@@ -332,15 +405,15 @@ export default function RightsIdentifier() {
                   setIssue("");
                   setDocumentId(null);
                 }}
-                className="mt-4 text-sm underline text-center w-full"
+                className="mt-4 text-sm underline text-center w-full hover:opacity-80 transition-opacity"
               >
                 Start over
               </button>
             </div>
           </motion.div>
         ) : (
-          <p className="text-red-300 mt-6 text-center">
-            Sorry, we couldn’t generate a summary for this area.
+          <p className="text-amber-300 mt-6 text-center">
+            Sorry, we couldn't generate a summary for this area.
           </p>
         ))}
       <style>{`
@@ -361,6 +434,14 @@ export default function RightsIdentifier() {
   .custom-scroll::-webkit-scrollbar-track {
     background: rgba(30, 35, 55, 0.06);
     border-radius: 20px;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
   }
 `}</style>
     </div>

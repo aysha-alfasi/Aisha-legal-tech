@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import RightsIdentifierModal from "../RightsIdentifierModal.js";
 
 export default function GameEngine({ game, onFinish }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
+  const [openRights, setOpenRights] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const totalQuestions = game.scenarios.length;
 
@@ -73,12 +77,12 @@ export default function GameEngine({ game, onFinish }) {
 
               {/* < Identify your rights button ♥ /> */}
               <button
-                onClick={() => {
-                  document
-                    .getElementById("rights-section")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
+                      onClick={() => {
+  setOpenRights(true);
+  setOpenModal(false);
+}}
                 className="text-sm underline opacity-80"
+                
               >
                 Identify your rights step by step
               </button>
@@ -207,6 +211,16 @@ export default function GameEngine({ game, onFinish }) {
           )}
         </div>
       </div>
+      <AnimatePresence>
+  {openRights && (
+    <RightsIdentifierModal
+      onClose={() => {
+        setOpenRights(false);
+        setOpenModal(true);
+      }}
+    />
+  )}
+</AnimatePresence>
     </div>
   );
 }

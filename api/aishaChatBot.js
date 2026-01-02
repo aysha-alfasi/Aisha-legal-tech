@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     reply = {
       intro: "Hello! I'm Aisha 👋",
       principle:
-        "I’m here to help you understand general legal principles in a simple and friendly way.",
+        "I’m here to help you understand general legal principles in a simple and friendly way. 💡 I don’t do casual chats, but I’m great at explaining legal principles clearly.",
       firstStep:
         "You can describe your situation in your own words. I’ll help identify general legal principles that may apply.",
       note: "This is general legal information, not legal advice.",
@@ -139,14 +139,14 @@ export default async function handler(req, res) {
       };
     } else {
       // < no matches found ♥ />
-      reply = {
-        intro: "I want to make sure I understand you correctly.",
-        principle:
-          "Your message may involve legal principles, but I couldn’t clearly identify a specific topic yet.",
-        firstStep:
-          "Common areas people ask about include Employment, Housing, Consumer, Family, and Privacy. You can describe your situation in a bit more detail.",
-        note: "This is general legal information, not legal advice.",
-      };
+    reply = {
+  intro: "I want to make sure I understand you correctly.",
+  principle:
+    "I couldn’t clearly identify a legal situation from your message. I’m designed to help with legal-related situations rather than general chat.",
+  firstStep:
+    "If your question involves a legal concern, you can describe what happened in a bit more detail. Common areas include Employment, Housing, Consumer, Family, and Privacy.",
+  note: "This is general legal information, not legal advice.",
+};
     }
   }
 
