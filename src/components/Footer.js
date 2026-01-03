@@ -200,9 +200,16 @@ export default function SignatureSection() {
                   <div className="flex items-center justify-center gap-0">
                     <span className="text-lg sm:text-xl md:text-2xl text-gray-800">
                       {typedText}
+                        <motion.span
+            className="ml-1 text-gray-800"
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+          >
+            |
+          </motion.span>
                     </span>
 
-                    {isVisible && (
+           {/*          {isVisible && (
                       <motion.span
                         className="text-gray-800 font-bold inline-block h-6 ml-1"
                         animate={{ opacity: [1, 0, 1] }}
@@ -214,7 +221,7 @@ export default function SignatureSection() {
                       >
                         |
                       </motion.span>
-                    )}
+                    )} */}
                   </div>
                 </motion.div>
               </div>

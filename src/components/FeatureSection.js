@@ -71,12 +71,12 @@ export default function FeatureSection({ onStart }) {
               {
                 img: Aisha,
                 title: "Chat with Aisha",
-                desc: "Describe your situation freely and get clear, human-like guidance.",
+                desc: "Describe your situation freely and get clear legal insights.",
               },
               {
                 img: rights,
                 title: "Know Your Rights",
-                desc: "Step-by-step explanations to understand your legal position.",
+                desc: "Step-by-step guide to Identify your legal rights.",
               },
               {
                 img: RQ,
