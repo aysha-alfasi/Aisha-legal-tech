@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gamesList } from "../../data/games/gamesList.js";
 import GameEngine from "./GameEngine";
@@ -6,6 +6,8 @@ import GameEngine from "./GameEngine";
 export default function GamesDashboard() {
   const [activeGame, setActiveGame] = useState(null);
   const [showBack, setShowBack] = useState(false);
+
+  const gameSectionRef = useRef(null);
 
   useEffect(() => {
     const homeSection = document.getElementById("home");
@@ -24,12 +26,16 @@ export default function GamesDashboard() {
 
   if (activeGame) {
     return (
-      <GameEngine game={activeGame} onFinish={() => setActiveGame(null)} />
+      <GameEngine
+        game={activeGame}
+        onFinish={() => setActiveGame(null)}
+        scrollTargetRef={gameSectionRef}
+      />
     );
   }
 
   return (
-    <div className="bg-[#1E2337]" id="game-section">
+    <div className="bg-[#1E2337]" id="game-section" ref={gameSectionRef}>
       {/* < Section Wrapper ♥ /> */}
       <div className="min-h-screen flex flex-col items-center justify-center">
         {/* < Section Title ♥ /> */}

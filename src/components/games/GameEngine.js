@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import RightsIdentifierModal from "../RightsIdentifierModal.js";
 
-export default function GameEngine({ game, onFinish }) {
+export default function GameEngine({ game, onFinish, scrollTargetRef }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [openRights, setOpenRights] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+useEffect(() => {
+  scrollTargetRef?.current?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}, []);
+
 
   const totalQuestions = game.scenarios.length;
 

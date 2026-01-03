@@ -4,21 +4,26 @@ import Aisha from "../imgs/lagalImg.png";
 import Button from "./UI/Button";
 
 export default function HeroSection({ onStart }) {
-  const [typedText, setTypedText] = useState("");
+  const [charIndex, setCharIndex] = useState(0);
 
   const fullText = "Empowering You with Legal Knowledge.";
 
   // < typing effect ♥ />
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < fullText.length) {
-        setTypedText((prev) => prev + fullText.charAt(index));
-        index++;
-      } else clearInterval(interval);
-    }, 45);
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCharIndex((prev) => {
+      if (prev >= fullText.length) {
+        clearInterval(interval);
+        return prev;
+      }
+      return prev + 1;
+    });
+  }, 45);
+
+  return () => clearInterval(interval);
+}, []);
+
+
 
   return (
     <div
@@ -151,7 +156,7 @@ export default function HeroSection({ onStart }) {
         transition={{ duration: 0.8, delay: 1.2 }}
       >
         <span className="whitespace-pre-wrap font-signature text-white text-[16px] sm:text-[18px] md:text-[20px] inline-block">
-          {typedText}
+          {fullText.slice(0, charIndex)}
           <motion.span
             className="ml-1 text-[#9BB8FF]"
             animate={{ opacity: [1, 0, 1] }}
