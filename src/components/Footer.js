@@ -249,7 +249,7 @@ return () => {
                   animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 1.6 }}
                 >
-                  <span>© 2025 Adalex.</span>
+                  <span>© 2026 Adalex.</span>
 
                   <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-5">
                     <button
@@ -305,7 +305,7 @@ return () => {
                     Privacy Policy
                   </h2>
                   <p className="text-xs text-gray-400 font-light mt-2 tracking-wide">
-                    Last updated: January 2025
+                    Last updated: Sep 2026
                   </p>
                 </div>
                 <button
@@ -396,7 +396,7 @@ return () => {
                     Terms of Service
                   </h2>
                   <p className="text-xs text-gray-400 font-light mt-2 tracking-wide">
-                    Last updated: January 2025
+                    Last updated: Sep 2026
                   </p>
                 </div>
                 <button
