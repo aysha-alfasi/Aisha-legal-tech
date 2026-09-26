@@ -62,7 +62,7 @@ useEffect(() => {
           }}
           transition={{ duration: 1.8, ease: "easeInOut" }}
         >
-          Aisha Legal Tech
+          Adalex
         </motion.h1>
 
         {/* < Hero Subtitle ♥ /> */}
@@ -110,9 +110,9 @@ useEffect(() => {
           ))}
         </motion.div>
 
-        {/* < Start Now Button & Aisha Image ♥ /> */}
+        {/* < Start Now Button ♥ /> */}
         <motion.div
-          className="flex flex-col sm:flex-row items-center gap-12 sm:gap-8 md:gap-40 md:mt-6 lg:mt-6 xl:mt-8"
+          className="flex flex-col sm:flex-row items-center gap-12 sm:gap-8 md:gap-40 md:mt-6 lg:mt-6 xl:mt-8 mb-10"
           initial={{ opacity: 0, scale: 0.8, rotateX: 15 }}
           animate={{ opacity: 1, scale: 1, rotateX: 0 }}
           transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
@@ -130,21 +130,6 @@ useEffect(() => {
             <Button text="Start Learning" onClick={onStart} />
           </motion.div>
 
-          <motion.img
-            src={Aisha}
-            alt="Avatar"
-            className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-6 sm:mb-10"
-            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              rotate: 0,
-              filter: "drop-shadow(0 0 20px rgba(150,180,255,0.4))",
-            }}
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            whileTap={{ scale: 0.95, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          />
         </motion.div>
       </div>
 

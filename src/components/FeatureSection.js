@@ -32,7 +32,36 @@ const cardVariants = {
   },
 };
 
+const services = [
+  {
+    key: "chat",
+    img: Aisha,
+    title: "Chat with Aisha",
+    desc: "Describe your situation freely and get clear legal insights.",
+  },
+  {
+    key: "rights",
+    img: rights,
+    title: "Know Your Rights",
+    desc: "Step-by-step guide to identify your legal rights.",
+  },
+  {
+    key: "quiz",
+    img: RQ,
+    title: "Interactive Quizzes",
+    desc: "Test your knowledge through engaging and simple quizzes.",
+  },
+];
+
 export default function FeatureSection({ onStart }) {
+  const handleCardClick = (key) => {
+    if (typeof onStart === "function") {
+      onStart(key);
+    } else {
+      console.warn("onStart غير معرّف");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center bg-[#1E2337]">
       <section className="py-32 w-full">
@@ -67,40 +96,32 @@ export default function FeatureSection({ onStart }) {
             whileInView="show"
             viewport={{ once: false, amount: 0.4 }}
           >
-            {[
-              {
-                img: Aisha,
-                title: "Chat with Aisha",
-                desc: "Describe your situation freely and get clear legal insights.",
-              },
-              {
-                img: rights,
-                title: "Know Your Rights",
-                desc: "Step-by-step guide to Identify your legal rights.",
-              },
-              {
-                img: RQ,
-                title: "Interactive Quizzes",
-                desc: "Test your knowledge through engaging and simple quizzes.",
-              },
-            ].map((item, i) => (
+            {services.map((item) => (
               <motion.div
-                key={i}
+                key={item.key}
                 variants={cardVariants}
-                whileHover={{
-                  y: -8,
-                  scale: 1.02,
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                onClick={() => handleCardClick(item.key)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleCardClick(item.key);
+                  }
                 }}
-                transition={{
-                  duration: 0.35,
-                  ease: "easeOut",
-                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open ${item.title}`}
                 className="
                   group flex flex-col items-center text-center
                   bg-white/5 rounded-2xl p-8
                   border border-white/10
-                  hover:border-teal-300/30
+                  hover:border-teal-300/40
+                  hover:bg-white/[0.07]
                   transition-colors
+                  cursor-pointer
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300/60
                 "
               >
                 {/*  < Icon ♥ /> */}
@@ -118,37 +139,26 @@ export default function FeatureSection({ onStart }) {
                 <h3 className="text-xl font-semibold text-teal-50 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-teal-50/70 text-sm leading-relaxed">
+                <p className="text-teal-50/70 text-sm leading-relaxed mb-4">
                   {item.desc}
                 </p>
+
+                {/*  < Click hint ♥ /> */}
+                <span
+                  className="
+                    mt-auto inline-flex items-center gap-2
+                    text-teal-300/0 group-hover:text-teal-300
+                    text-sm font-medium
+                    transition-colors duration-300
+                  "
+                >
+                  Click to start
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </span>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* < CTA ♥ />  */}
-          <motion.div
-            className="mt-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.6 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.button
-              onClick={onStart}
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.25 }}
-              className="
-                px-10 py-3
-                bg-[#FAF3EA] text-[#1E2337]
-                rounded-full
-                text-base font-medium
-                shadow-lg
-                hover:shadow-xl
-              "
-            >
-              Try It Now
-            </motion.button>
           </motion.div>
         </div>
       </section>
