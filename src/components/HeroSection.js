@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Aisha from "../imgs/lagalImg.png";
 import Button from "./UI/Button";
 
 export default function HeroSection({ onStart }) {

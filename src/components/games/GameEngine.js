@@ -8,14 +8,14 @@ export default function GameEngine({ game, onFinish, scrollTargetRef }) {
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [openRights, setOpenRights] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+const [, setOpenModal] = useState(false);
 
 useEffect(() => {
   scrollTargetRef?.current?.scrollIntoView({
     behavior: "smooth",
     block: "start",
   });
-}, []);
+}, [scrollTargetRef]);
 
 
   const totalQuestions = game.scenarios.length;

@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 export default function SignatureSection() {
   const [typedText, setTypedText] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [, setIsTypingComplete] = useState(false);
   const [openPrivacy, setOpenPrivacy] = useState(false);
   const [openTerms, setOpenTerms] = useState(false);
   const sectionRef = useRef(null);
@@ -36,11 +36,12 @@ export default function SignatureSection() {
       observer.observe(sectionRef.current);
     }
 
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
+  const currentRef = sectionRef.current;
+return () => {
+  if (currentRef) {
+    observer.unobserve(currentRef);
+  }
+};
   }, []);
 
   // < typing effect ♥ />
@@ -76,13 +77,13 @@ export default function SignatureSection() {
             animate={
               isVisible
                 ? {
-                    background:
-                      "linear-gradient(to top right, #4C637D, #6B7C8B)",
-                    opacity: 0.5,
-                  }
+                  background:
+                    "linear-gradient(to top right, #4C637D, #6B7C8B)",
+                  opacity: 0.5,
+                }
                 : {
-                    opacity: 0,
-                  }
+                  opacity: 0,
+                }
             }
             whileHover={{
               opacity: 0.8,
@@ -452,10 +453,7 @@ export default function SignatureSection() {
               </Section>
 
               <Section number="6" title="What belongs to us">
-                All content, design, and code on Adalex belong to Aisha
-                Legal Tech and are protected by copyright and intellectual
-                property laws. Please don't reproduce, distribute, or
-                create derivative works without our written permission.
+                All content, design, and code on Adalex belong to Aisha Legal Tech. Some visual elements were created with the help of AI tools and are used under their respective terms. Please don't reproduce, distribute, or create derivative works without our written permission.
               </Section>
 
               <Section number="7" title="Limitation of liability">
